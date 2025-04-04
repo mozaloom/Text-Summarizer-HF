@@ -1,2 +1,4 @@
 gradio
 transformers
+tensorflow
+torch
