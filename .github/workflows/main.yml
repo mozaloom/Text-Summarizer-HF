@@ -13,18 +13,27 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Clear Git credentials cache
+        # This clears any cached credentials that might interfere with token-based auth.
+        run: |
+          git config --global --unset credential.helper || true
+
       - name: Install Git LFS
         run: git lfs install
 
       - name: Add remote using Access Token
         env:
           HF: ${{ secrets.HF }}
-        run: git remote add space https://mozaloom:${{ secrets.HF }}@huggingface.co/spaces/mozaloom/demo
+        run: |
+          # Remove remote if already exists (to avoid duplicate remotes)
+          git remote remove space || true
+          # Add remote with your username and access token
+          git remote add space https://mozaloom:${{ secrets.HF }}@huggingface.co/spaces/mozaloom/demo
+          # Print remote configuration for debugging (token will be masked)
+          git remote -v
 
-      - name: Debug Remote URL
-        run: git remote -v
-
-      - name: Push to Hub
+      - name: Push to Hub with Verbose Debugging
         env:
           HF: ${{ secrets.HF }}
+          GIT_TRACE: 1
         run: git push --force https://mozaloom:${{ secrets.HF }}@huggingface.co/spaces/mozaloom/demo main
