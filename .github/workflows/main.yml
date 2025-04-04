@@ -13,30 +13,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Clear Git credentials cache
-        run: git config --global --unset credential.helper || true
-
       - name: Install Git LFS
         run: git lfs install
 
-      - name: Set URL-encoded token and add remote
+      - name: Add remote using Access Token
         env:
-          HF: ${{ secrets.HF }}
-        run: |
-          # Compute URL-encoded token
-          ENCODED_TOKEN=$(python -c "import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1].strip()))" "$HF")
-          # Remove remote if it already exists
-          git remote remove space || true
-          # Add the remote using the URL-encoded token
-          git remote add space https://mozaloom:${ENCODED_TOKEN}@huggingface.co/spaces/mozaloom/demo
-          # Debug: print remote configuration (the token itself will not be shown)
-          git remote -v
+          HF: ${{ secrets.HG }}
+        run: git remote add space https://mozaloom:${{ secrets.HG }}@huggingface.co/spaces/mozaloom/demo
 
-      - name: Push to Hub with Verbose Debugging
+      - name: Debug Remote URL
+        run: git remote -v
+
+      - name: Push to Hub
         env:
-          HF: ${{ secrets.HF }}
-          GIT_TRACE: 1
-        run: |
-          # Compute URL-encoded token again
-          ENCODED_TOKEN=$(python -c "import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1].strip()))" "$HF")
-          git push --force https://mozaloom:${ENCODED_TOKEN}@huggingface.co/spaces/mozaloom/demo main
+          HF: ${{ secrets.HG }}
+        run: git push --force https://mozaloom:${{ secrets.HG }}@huggingface.co/spaces/mozaloom/demo main
