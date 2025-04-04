@@ -19,7 +19,7 @@ jobs:
       - name: Add remote using Access Token
         env:
           HF: ${{ secrets.HG }}
-        run: git remote add space https://mozaloom:${{ secrets.HG }}@huggingface.co/spaces/mozaloom/demo
+        run: git remote add space https://mozaloom:${{ secrets.HG }}@huggingface.co/spaces/mozaloom/Text-Summarizer-HF
 
       - name: Debug Remote URL
         run: git remote -v
@@ -27,4 +27,4 @@ jobs:
       - name: Push to Hub
         env:
           HF: ${{ secrets.HG }}
-        run: git push --force https://mozaloom:${{ secrets.HG }}@huggingface.co/spaces/mozaloom/demo main
+        run: git push --force https://mozaloom:${{ secrets.HG }}@huggingface.co/spaces/mozaloom/Text-Summarizer-HF main
