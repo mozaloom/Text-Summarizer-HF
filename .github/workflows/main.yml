@@ -13,17 +13,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Add remote
+      - name: Install Git LFS
+        run: git lfs install
+
+      - name: Add remote using Access Token
         env:
           HF: ${{ secrets.HF }}
         run: git remote add space https://mozaloom:${{ secrets.HF }}@huggingface.co/spaces/mozaloom/demo
 
-      - name: Push to hub
+      - name: Debug Remote URL
+        run: git remote -v
+
+      - name: Push to Hub
         env:
           HF: ${{ secrets.HF }}
         run: git push --force https://mozaloom:${{ secrets.HF }}@huggingface.co/spaces/mozaloom/demo main
-      
-
-        
-
-
