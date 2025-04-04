@@ -3,8 +3,6 @@ name: Sync to Hugging Face hub
 on:
   push:
     branches: [main]
-
-  # To run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
@@ -15,12 +13,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Add remote
-        env:
-          HF: ${{ secrets.HF }}
-        run: git remote add space https://mozaloom:$HF@huggingface.co/spaces/mozaloom/demo
+      - name: Install Git LFS
+        run: git lfs install
 
-      - name: Push to hub
+      - name: Add remote using Access Token
         env:
-          HF: ${{ secrets.HF }}
-        run: git push --force https://mozaloom:$HF@huggingface.co/spaces/mozaloom/demo main
+          HF: ${{ secrets.HG }}
+        run: git remote add space https://mozaloom:${{ secrets.HG }}@huggingface.co/spaces/mozaloom/demo
+
+      - name: Debug Remote URL
+        run: git remote -v
+
+      - name: Push to Hub
+        env:
+          HF: ${{ secrets.HG }}
+        run: git push --force https://mozaloom:${{ secrets.HG }}@huggingface.co/spaces/mozaloom/demo main
