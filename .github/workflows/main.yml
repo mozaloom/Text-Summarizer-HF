@@ -22,3 +22,8 @@ jobs:
         env:
           HF: ${{ secrets.HF }}
         run: git push --force https://mozaloom:${{ secrets.HF }}@huggingface.co/spaces/mozaloom/demo main
+      
+
+        
+
+
